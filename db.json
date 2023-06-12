@@ -1,0 +1,112 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Ignacio",
+      "lastName": "Madrigal",
+      "email": "ign@gmail.com",
+      "password": "admin123"
+    },
+    {
+      "id": 2,
+      "firstName": "Conrad",
+      "lastName": "Laskey",
+      "email": "conradlas@gmail.com",
+      "password": "admins123"
+    },
+    {
+      "firstName": "carlos",
+      "LastName": "",
+      "email": "admin@openix.com.ar",
+      "password": "admin",
+      "lastName": "madrid",
+      "id": 3
+    },
+    {
+      "firstName": "CARLOS",
+      "lastName": "MADRIGAL",
+      "email": "nieva_7@live.com.ar",
+      "password": "admins123",
+      "id": 4
+    },
+    {
+      "firstName": "luca",
+      "lastName": "madrid",
+      "email": "ignafree97@gmail.com",
+      "password": "admin123",
+      "id": 5
+    },
+    {
+      "firstName": "alvarito",
+      "lastName": "14",
+      "email": "alvarito14@gmail.com",
+      "password": "admin123",
+      "id": 6
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "test-1",
+      "price": 2.3,
+      "category": "Industrial"
+    },
+    {
+      "id": 2,
+      "name": "test-2",
+      "price": 52.3,
+      "category": "Games"
+    },
+    {
+      "id": 3,
+      "name": "test-3",
+      "price": 3.3,
+      "category": "Games"
+    },
+    {
+      "id": 4,
+      "name": "test-4",
+      "price": 2.42,
+      "category": "Industrial"
+    },
+    {
+      "id": 5,
+      "name": "test-5",
+      "price": 32.3,
+      "category": "Games"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "name": "test-1",
+      "description": "asdsa",
+      "loadDate": "May 01 2023",
+      "taskType": "HOME"
+    },
+    {
+      "name": "Task-33",
+      "description": "",
+      "loadDate": "",
+      "taskType": "",
+      "active": false,
+      "id": 2
+    },
+    {
+      "name": "",
+      "description": "",
+      "loadDate": "",
+      "taskType": "",
+      "active": false,
+      "id": 4
+    },
+    {
+      "name": "alvarito14",
+      "description": "",
+      "loadDate": "",
+      "taskType": "",
+      "active": false,
+      "id": 5
+    }
+  ]
+}

@@ -9,52 +9,22 @@ import {
 import { Header } from "../../../components";
 import { useEffect, useMemo, useState } from "react";
 import { Task } from "../../../types/task";
-import useApiService from "../../../api/useApiService";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridRowId } from "@mui/x-data-grid";
 import { useNotification } from "../../../context/notification.context";
 import moment from "moment";
 import UserAction from "../../../components/UserAction/UserActions";
+import { useTask } from "../../../hooks/useTask";
 
 const TodoPage = () => {
-  const [loading, setLoading] = useState(true);
-  const [tasks, setTasks] = useState<any>([]);
+  const [active, setActive] = useState(true);
   const [name, setName] = useState("");
   const { getError, getSuccess } = useNotification();
-  const { fetchTasks, createNewTask } = useApiService();
+  const { tasks, submitTask, deleteAll, deleTaskSelected } = useTask();
+  const [loading, setLoading] = useState(false);
+  const [ids, setIds] = useState<any>([]);
+  // const [taskList, setTaskList] = useState<any>([]);
 
-  useEffect(() => {
-    setLoading(true);
-    fetchTasks()
-      .then((task) => {
-        setTasks(task);
-        setTimeout(() => setLoading(false), 500);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-
-  const createTask = async () => {
-    const taskWithName: Task = {
-      name: name,
-      description: "",
-      loadDate: "",
-      taskType: "",
-      active: false,
-    };
-    await createNewTask(taskWithName)
-      .then((t) => {
-        setTasks([...tasks, t]);
-        getSuccess("Task Created");
-        setTimeout(() => setLoading(false), 500);
-      })
-      .catch((error: any) => {
-        getError("Error: " + error);
-      });
-  };
-
-  const columns = useMemo(
-    () => [
+  const columns = [
       { field: "id", headerName: "Id", width: 220 },
       { field: "name", headerName: "Name", width: 170 },
       { field: "description", headerName: "Description", width: 170 },
@@ -74,8 +44,8 @@ const TodoPage = () => {
         editable: true,
       },
       {
-        field: "active",
-        headerName: "Active",
+        field: "pending?",
+        headerName: "Pending",
         width: 170,
         type: "boolean",
         editable: true,
@@ -85,11 +55,46 @@ const TodoPage = () => {
         headerName: "Actions",
         width: 170,
         sortable: false,
-        renderCell: ({ row }: { row: any }) => <UserAction row={row} />,
+        renderCell: ({ row }: any) => <UserAction row={row} />,
       },
-    ],
-    []
-  );
+    ]
+
+  const createTask = async () => {
+    try {
+      const taskWithName: Task = {
+        name: name,
+        description: "",
+        loadDate: "",
+        taskType: "",
+        active: false,
+      };
+      submitTask(taskWithName);
+      getSuccess("Task created successfully");
+    } catch (error) {
+      getError(`Failed to create task: ${error}`);
+    }
+  };
+
+  const deleteAllTasks = async () => {
+    try {
+      deleteAll();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteTasksSelected = async () => {
+    try {
+      deleTaskSelected(ids);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSelectionModelChange = (selectionModel: GridRowId[]) => {
+    const selectedIDs = selectionModel.map((id) => id.toString());
+    setIds(selectedIDs);
+  };
 
   return (
     <>
@@ -99,25 +104,34 @@ const TodoPage = () => {
             title="To do list"
             description="Add new Task"
             element={
-              <>
+              <div>
                 <TextField
                   fullWidth
                   id="outlined-basic"
+                  value={name}
                   label="New ToDo"
                   variant="outlined"
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    if (e.target.value.length > 0) {
+                      setActive(false);
+                    } else {
+                      setActive(true);
+                    }
+                    setName(e.target.value);
+                  }}
                 />
                 <Button
                   variant="contained"
                   color="primary"
                   fullWidth
                   sx={{ mt: 3 }}
-                  disabled={false}
+                  disabled={active}
                   onClick={() => createTask()}
                 >
                   add new Task
                 </Button>
-              </>
+              </div>
             }
           />
 
@@ -144,6 +158,7 @@ const TodoPage = () => {
                   pageSizeOptions={[5, 10, 20]}
                   checkboxSelection
                   disableRowSelectionOnClick
+                  onRowSelectionModelChange={handleSelectionModelChange}
                 />
               </div>
               <ButtonGroup
@@ -153,8 +168,12 @@ const TodoPage = () => {
                 aria-label="Disabled elevation buttons"
                 sx={{ mr: 3, py: 2 }}
               >
-                <Button fullWidth>Delete done Tasks</Button>
-                <Button fullWidth>Delete All Tasks</Button>
+                <Button fullWidth onClick={deleteTasksSelected}>
+                  Delete done Tasks
+                </Button>
+                <Button fullWidth onClick={deleteAllTasks}>
+                  Delete All Tasks
+                </Button>
               </ButtonGroup>
             </>
           )}

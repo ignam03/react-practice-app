@@ -58,8 +58,6 @@ const TaskForm = ({ open, handleClose, idTask }: Props) => {
     console.log(setTaskData);
   };
 
-  console.log(idTask);
-
   const formik = useFormik<Task>({
     initialValues: {
       name: "",

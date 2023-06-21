@@ -39,9 +39,9 @@ const TodoPage = () => {
         field: "taskType",
         headerName: "TaskType",
         width: 170,
-        type: "singleSelect",
-        valeOptions: ["Home", "Work", "Sport"],
-        editable: true,
+        // type: "singleSelect",
+        // valeOptions: ["Home", "Work", "Sport"],
+        // editable: true,
       },
       {
         field: "pending?",
@@ -55,7 +55,8 @@ const TodoPage = () => {
         headerName: "Actions",
         width: 170,
         sortable: false,
-        renderCell: ({ row }: any) => <UserAction row={row} />,
+        // renderCell: ({ row }: any) => <UserAction row={row} />,
+        renderCell:UserAction
       },
     ]
 

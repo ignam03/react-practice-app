@@ -38,14 +38,6 @@ const useApiService = () => {
 
   //TODO all login
   const login = async (login: LoginUser) => {
-    // const { data } = await clientAxios.get(`/users?email=${login.email}`);
-    // localStorage.setItem("token", data.token);
-    // setAuth(data);
-    // data.map((user: any) => {
-    //   setAuth(user);
-    // });
-    // return data.user;
-
     try {
       const { data } = await clientAxios.get(`/users?email=${login.email}`);
       const userLogger = data[0];
@@ -84,7 +76,12 @@ const useApiService = () => {
   };
 
   const fetchTask = async (id: string | number) => {
-    return await clientAxios.get(`${endPointTasks}/${id}`);
+    try {
+      const task: any = await clientAxios.get(`${endPointTasks}/${id}`);
+      return task;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const createNewTask = async function (task?: Task) {
@@ -96,8 +93,21 @@ const useApiService = () => {
     }
   };
 
+  const editTask = async (id: string | number, task: Task) => {
+    try {
+      const { data } = await clientAxios.put(`${endPointTasks}/${id}`, task);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const deleteTask = async (id: string | null) => {
-    return await clientAxios.delete(`${endPointTasks}/${id}`);
+    try {
+      return await clientAxios.delete(`${endPointTasks}/${id}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return {
@@ -106,6 +116,7 @@ const useApiService = () => {
     fetchTasks,
     fetchTask,
     createNewTask,
+    editTask,
     deleteTask,
   };
 };

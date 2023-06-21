@@ -28,8 +28,6 @@ const UserAction: React.FC<UserActionsProps> = ({ row }) => {
     setOpenDelete(false);
   };
 
-  console.log("user action");
-
   return (
     <>
       <Button

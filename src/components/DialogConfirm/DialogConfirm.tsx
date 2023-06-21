@@ -1,5 +1,4 @@
 import { useNotification } from "../../context/notification.context";
-import useApiService from "../../api/useApiService";
 import {
   Button,
   Dialog,
@@ -7,6 +6,7 @@ import {
   DialogTitle,
   Stack,
 } from "@mui/material";
+import { useTask } from "../../hooks/useTask";
 
 type Props = {
   open: boolean;
@@ -16,12 +16,15 @@ type Props = {
 
 const DialogConfirm = ({ open, handleClose, idTask }: Props) => {
   const { getError, getSuccess } = useNotification();
-  const { deleteTask } = useApiService();
+  const { deleteTaskList } = useTask();
 
   const deleteTaskId = () => {
-    deleteTask(idTask).then(() => {
+    try {
+      deleteTaskList(idTask);
       getSuccess("Task Deleted");
-    });
+    } catch (error) {
+      getError("Error deleting task");
+    }
   };
 
   return (

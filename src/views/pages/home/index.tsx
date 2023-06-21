@@ -4,6 +4,11 @@ import {
   Box,
   CircularProgress,
   Pagination,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { CardComponent, Header } from "../../../components";
@@ -12,6 +17,7 @@ import { TypeCharacter } from "../../../types/character";
 
 export const HomePage: React.FC<{}> = () => {
   const [page, setPage] = useState(1);
+  const [filter, setFilter ] = useState("");
   const [numberPage, setNumberPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [allCharacters, setAllCharacters] = useState<TypeCharacter[] | null>(
@@ -36,12 +42,32 @@ export const HomePage: React.FC<{}> = () => {
     setPage(value);
   };
 
+  const handleChangeFilter = (event: SelectChangeEvent<string>) => {
+    setFilter(event.target.value);
+    console.log(event.target.value);
+  }
+
   return (
     <Container maxWidth="xl">
       <Header
         title="Rick & Morty "
         description="welcome application react openix"
-        element={null}
+        element={
+          <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">filter</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={filter}
+            label="filter"
+            onChange={handleChangeFilter}
+          >
+            <MenuItem value={"character"}>Characters</MenuItem>
+            <MenuItem value={"location"}>Locations</MenuItem>
+            <MenuItem value={"episode"}>Episodes</MenuItem>
+          </Select>
+        </FormControl>
+        }
       />
       {loading ? (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>

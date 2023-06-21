@@ -1,19 +1,25 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
 import DialogConfirm from "../DialogConfirm/DialogConfirm";
+import TaskForm from "../TaskForm/TaskForm";
 
 type UserActionsProps = {
   row: any;
-  //   rowId: any;
-  //   setRowId: any;
 };
 
 const UserAction: React.FC<UserActionsProps> = ({ row }) => {
+  const [openEdit, setOpenEdit] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
   const [idTask, setIdTask] = useState<string | null>(null);
-  const editTask = ({ id }: { id: string | number }) => {
-    console.log(id);
+  const handleOpenEdit = ({ id }: { id: string | null }) => {
+    setOpenEdit(true);
+    setIdTask(id);
   };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
+
   const handleOpenDelete = (id: string) => {
     setOpenDelete(true);
     setIdTask(id);
@@ -22,13 +28,15 @@ const UserAction: React.FC<UserActionsProps> = ({ row }) => {
     setOpenDelete(false);
   };
 
+  console.log("user action");
+
   return (
     <>
       <Button
         color="success"
         variant="contained"
         sx={{ margin: 1 }}
-        onClick={() => editTask(row)}
+        onClick={(e: any) => handleOpenEdit(row)}
       >
         Edit
       </Button>
@@ -45,6 +53,7 @@ const UserAction: React.FC<UserActionsProps> = ({ row }) => {
         idTask={idTask}
         handleClose={handleCloseDelete}
       />
+      <TaskForm open={openEdit} handleClose={handleCloseEdit} idTask={idTask} />
     </>
   );
 };

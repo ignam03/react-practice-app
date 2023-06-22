@@ -38,12 +38,13 @@ export const TaskValidate = yup.object().shape({
     .string()
     .trim()
     .required("Name is required")
-    .min(10, "min 10 characters"),
+    .min(5, "min 10 characters"),
   description: yup
     .string()
     .trim()
     .min(10, "min 10 characters")
-    .max(50, "max 50 characters"),
+    .max(50, "max 50 characters")
+    .required("Description is required"),
   loadDate: yup
     .date()
     .min(new Date(), "Min date must be today ")

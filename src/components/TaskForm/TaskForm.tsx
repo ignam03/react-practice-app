@@ -173,6 +173,7 @@ const TaskForm = ({ open, handleClose, idTask }: Props) => {
                       type="submit"
                       variant="contained"
                       sx={{ mt: 1.5, mb: 3 }}
+                      disabled={!formik.dirty}
                     >
                       Save changes
                     </Button>

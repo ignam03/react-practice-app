@@ -9,6 +9,7 @@ import { LoginPage } from "../views/pages/Login/LoginPage";
 import AuthLayout from "../layout/AuthLayout/AuthLayout";
 import RouteProtected from "./RouteProtected";
 import { TaskProvider } from "../context/TaskProvider";
+import LocationPage from "../views/pages/Location/LocationPage";
 
 export const AppRouter: React.FC<{}> = () => {
   return (
@@ -24,6 +25,7 @@ export const AppRouter: React.FC<{}> = () => {
         <Route path="/rick-morty-list" element={<RouteProtected />}>
           <Route index element={<HomePage />} />
           <Route path="character/:id" element={<CharacterPage />}></Route>
+          <Route path="location/:id" element={<LocationPage />}></Route>
         </Route>
         <Route path="/admin-post-user" element={<RouteProtected />}>
           <Route index element={<AdminPage />} />

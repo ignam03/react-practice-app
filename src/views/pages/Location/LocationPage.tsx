@@ -54,7 +54,7 @@ const LocationPage = () => {
                         </Grid>
                         <Grid item xs={6}>
                             <img
-                                alt="character"
+                                alt="location"
                                 src={location!.url}
                                 style={{ width: "100%", borderRadius: "0.5em" }}
                             />

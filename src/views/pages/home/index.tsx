@@ -14,9 +14,12 @@ import React, { useEffect, useState } from "react";
 import { CardComponent, Header } from "../../../components";
 import { characters } from "./../../../api/characters";
 import { locations } from "../../../api/locations";
+import { episodes } from "../../../api/episodes";
 import { TypeCharacter } from "../../../types/character";
 import { TypeLocation } from "../../../types/location";
 import CardLocation from "../../../components/CardLocation/CardLocation";
+import { TypeEpisode } from "../../../types/episodes";
+import CardEpisode from "../../../components/CardEpisode/CardEpisode";
 
 export const HomePage: React.FC<{}> = () => {
   const [page, setPage] = useState(1);
@@ -27,6 +30,7 @@ export const HomePage: React.FC<{}> = () => {
     null
   );
   const [allLocations, setAllLocations] = useState<TypeLocation[] | null>(null);
+  const [allEpisodes, setAllEpisodes] = useState<TypeEpisode[] | null>(null);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -53,6 +57,19 @@ export const HomePage: React.FC<{}> = () => {
         .then((r) => {
           setNumberPage(r.data.info.pages);
           setAllLocations(r.data.results);
+          setAllCharacters([]);
+          setTimeout(() => setLoading(false), 1000);
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    } else if (filter === "episode") {
+      episodes
+        .fetchAll({ page })
+        .then((r) => {
+          setNumberPage(r.data.info.pages);
+          setAllEpisodes(r.data.results);
+          setAllLocations([]);
           setAllCharacters([]);
           setTimeout(() => setLoading(false), 1000);
         })
@@ -97,7 +114,7 @@ export const HomePage: React.FC<{}> = () => {
       ) : (
         <>
           <div>
-            {allLocations?.length !== 0 || allCharacters?.length !== 0 ? (
+            {allLocations?.length !== 0 || allEpisodes?.length !== 0 || allCharacters?.length !== 0 ? (
               <Grid sx={{ my: 2 }} container spacing={2} direction="row">
                 {allCharacters?.map((character) => (
                   <Grid key={character.id} item xs={3}>
@@ -119,6 +136,17 @@ export const HomePage: React.FC<{}> = () => {
                       type={location.type}
                       url={location.url}
                       id={location.id}
+                    />
+                  </Grid>
+                ))}
+                {allEpisodes?.map((episode) => (
+                  <Grid key={episode.id} item xs={3}>
+                    <CardEpisode
+                      id={episode.id}
+                      name={episode.name}
+                      air_date={episode.air_date}
+                      episode={episode.episode}
+                      characters={episode.characters}
                     />
                   </Grid>
                 ))}
